@@ -1,0 +1,79 @@
+close all
+clear all
+clc
+ 
+%% Parameters
+t_min = 0;
+t_max = 10;
+x0 = 1; % initial condition  
+h = 1;  % step size
+N = (t_max-t_min)/h; % number of steps 
+ 
+%% Analytical Solution
+ 
+t_analytical = linspace(t_min,t_max,100);
+x_analytical = x0*exp(-0.5*t_analytical);
+plot(t_analytical,x_analytical,'k--','linewidth',2)
+grid on
+hold on
+ 
+%% Euler's Method
+ 
+x_euler(1) = x0; % IC
+t_numerical = 0;
+ 
+for i = 1:N
+ 
+    a = odeFcn_LODR1(t_numerical(i),x_euler(i));
+    x_euler(i+1) = x_euler(i) + h*a;
+    t_numerical(i+1) = t_numerical(i) + h;
+ 
+end
+ 
+plot(t_numerical,x_euler,'b','linewidth',1.5)
+ 
+%% Trapezoidal Rule
+ 
+x_trapezoidal(1) = x0; % IC
+t_numerical = 0;
+ 
+for i = 1:N
+ 
+    a1 = odeFcn_LODR1(t_numerical(i),x_trapezoidal(i));
+    x_hat = x_trapezoidal(i) + h*a1;
+    a2 = odeFcn_LODR1(t_numerical(i)+h,x_hat);
+ 
+    x_trapezoidal(i+1) = x_trapezoidal(i) + h/2*(a1 + a2);
+    t_numerical(i+1) = t_numerical(i) + h;
+ 
+end
+ 
+plot(t_numerical,x_trapezoidal,'r','linewidth',1.5)
+ 
+%% Runge-Kutta 4th Order
+ 
+x_RK(1) = x0; % IC
+t_numerical = 0;
+ 
+for i = 1:N
+ 
+    a1 = odeFcn_LODR1(t_numerical(i),x_RK(i));
+    a2 = odeFcn_LODR1(t_numerical(i) + h/2, x_RK(i) + h/2*a1);
+    a3 = odeFcn_LODR1(t_numerical(i) + h/2, x_RK(i) + h/2*a2);
+    a4 = odeFcn_LODR1(t_numerical(i) + h, x_RK(i) + h*a3);
+ 
+    x_RK(i+1) = x_RK(i) + h/6*(a1 + 2*a2 + 2*a3 + a4);
+     t_numerical(i+1) = t_numerical(i) + h;
+ 
+end
+ 
+ 
+plot(t_numerical,x_RK,'m','linewidth',1.5)
+legend('analyticky','ODE1 - Euler','ODE2 - Trapz','ODE4 - Runge-Kutta')
+xlabel('t [s]','FontSize',14)
+ylabel('x [-]','FontSize',14)
+
+
+function [dx] = odeFcn_LODR1(t,x)
+    dx = -0.5*x; 
+end
