@@ -45,3 +45,10 @@ for i = 1:length(time)-1
     x_tk(:,i+1) = x_tk(:,i) + (delka_kroku / 6) * (a1 + 2*a2 + 2*a3 + a4);
 end
 end
+
+function dxdt = system_of_eqs(t, x)
+    % x(1) = x1, x(2) = x2
+    dxdt = zeros(2, 1); % Inicializace výstupního vektoru
+    dxdt(1) = x(2); % x1' = x2
+    dxdt(2) = 4*cos(x(2)) - 5*x(1); % x2' = 4*cos(x2) - 5*x1
+end
