@@ -1,0 +1,24 @@
+close all; clear; clc
+options = odeset('events',@eventFunction, 'refine', 10);
+[t,y, tev, yev] = ode45(@f,[0 10],[10,0], options);
+tplot = t;
+yplot = y;
+
+for i=1:9
+[t,y]=ode45(@f,[tplot(end) 100], [0; -yplot(end)*0.9], options);
+tplot = [tplot; t];
+yplot = [yplot; y];
+end
+
+plot(tplot,yplot(:,1))
+comet(tplot,yplot(:,1))
+function dsdt = f(t, s)
+g= 9.8; 
+dsdt = [s(2);-g];
+end
+
+function [check, isterminal, direction] = eventFunction(t, s)
+check = s(1);
+isterminal = 1;
+direction = -1;
+end
