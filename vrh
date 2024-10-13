@@ -71,3 +71,13 @@ fprintf('Total Distance Travelled: %3.2f \n',totalDistanceTravelled)
 v0_est = 1/2*9.81*t/sin(phi);
  
 fprintf('Initial velocity: %3.2f \n',v0_est)
+
+function [dX] = odeThrowingAtAnAngle(t,x)
+ 
+g = 9.81;
+ 
+A = [0 1 0 0; 0 0 0 0; 0 0 0 1; 0 0 0 0];
+B = [0; 0; 0; -g];
+dX = A*x + B;
+ 
+end
