@@ -10,10 +10,10 @@ t = t0:h:t_end; % Vektor časových okamžiků
 
 odeFcn = @(t,x) -0.5*x;
 
-Analytické řešení
+% Analytické řešení
 x_analytic = exp(-0.5 * t);
 
-Eulerova metoda
+% Eulerova metoda
 x_euler = zeros(size(t));
 x_euler(1) = x0;
 for i = 1:length(t)-1
@@ -21,7 +21,7 @@ for i = 1:length(t)-1
     x_euler(i+1) = x_euler(i) + h * a_euler;
 end
 
-Lichoběžníková metoda
+% Lichoběžníková metoda
 x_lichobeznikova = zeros(size(t));
 x_lichobeznikova(1) = x0;
 for i = 1:length(t)-1
@@ -30,7 +30,7 @@ for i = 1:length(t)-1
     x_lichobeznikova(i+1) = x_lichobeznikova(i) + h * (f1 + f2) / 2;
 end
 
-Runge-Kutta 4. řádu (ode4)
+% Runge-Kutta 4. řádu (ode4)
 x_tk = zeros(size(t));
 x_tk(1) = x0;
 for i = 1:length(t)-1
@@ -41,12 +41,12 @@ for i = 1:length(t)-1
     x_tk(i+1) = x_tk(i) + (h / 6) * (a1 + 2*a2 + 2*a3 + a4);
 end
 
-Výpočet MSE
+% Výpočet MSE
 mse_euler = mean((x_euler - x_analytic).^2);
 mse_trap = mean((x_lichobeznikova - x_analytic).^2);
 mse_rk = mean((x_tk - x_analytic).^2);
 
-Vykreslení výsledků
+% Vykreslení výsledků
 figure;
 hold on;
 plot(t, x_analytic, 'k-', 'LineWidth', 2, 'DisplayName', 'Analytické řešení', 'Color','yellow');
